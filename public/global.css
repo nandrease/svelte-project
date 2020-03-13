@@ -21,4 +21,11 @@ body {
 
 :root {
   --color-main: #e43958;
+  --color-main-faded: #ffc7de;
+  --color-bold: #343f53;
+  --color-disabled: #ccc;
+  --color-disabled-text: #959595;
+  --color-success: #01a129;
+  --color-success-faded: #c2ffd1;
+  --color-success-active: #1ac745;
 }
