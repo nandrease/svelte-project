@@ -28,4 +28,6 @@ body {
   --color-success: #01a129;
   --color-success-faded: #c2ffd1;
   --color-success-active: #1ac745;
+  --color-invalid: red;
+  --color-invalid-faded: #ffc7de;
 }

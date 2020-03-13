@@ -76,7 +76,6 @@
   </div>
   <div class="content">
     <p>{description}</p>
-    {isFavourite}
   </div>
   <footer>
     <Button href="mailto:{email}">Contact</Button>
