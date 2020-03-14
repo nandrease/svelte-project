@@ -8,11 +8,11 @@
         return res.json();
       })
       .then(data => {
-        const loadedMeetups = [];
+        const fetchedMeetups = [];
         for (const key in data) {
-          loadedMeetups.push({ ...data[key], id: key });
+          fetchedMeetups.push({ ...data[key], id: key });
         }
-        return { fetchedMeetups: loadedMeetups.reverse() };
+        return { fetchedMeetups: fetchedMeetups.reverse() };
       })
       .catch(err => {
         error = err;
@@ -34,7 +34,6 @@
 
   export let fetchedMeetups;
 
-  let loadedMeetups = [];
   let editMode = null;
   let editedId = null;
   let favsOnly = false;
@@ -43,18 +42,18 @@
   const dispatch = createEventDispatcher();
 
   $: filteredMeetups = favsOnly
-    ? loadedMeetups.filter(m => m.isFavourite)
-    : loadedMeetups;
+    ? fetchedMeetups.filter(m => m.isFavourite)
+    : fetchedMeetups;
 
   function setFilter(event) {
     favsOnly = event.detail === 1;
   }
 
   onMount(() => {
+    meetups.setMeetups(fetchedMeetups);
     meetups.subscribe(items => {
-      loadedMeetups = items;
+      fetchedMeetups = items;
     });
-    meetups.setMeetups(fetchedMeetups.reverse());
   });
 
   onDestroy(() => {

@@ -46,10 +46,6 @@
     border-color: var(--color-invalid);
     background: var(--color-invalid-faded);
   }
-  .error-mesage {
-    color: var(--color-invalid);
-    margin: 0.25rem 0;
-  }
 </style>
 
 <div class="form-control">

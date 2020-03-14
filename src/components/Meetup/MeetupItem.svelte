@@ -11,7 +11,6 @@
   export let imageUrl;
   export let description;
   export let address;
-  export let email;
   export let isFavourite;
 
   function toggleFavourite() {
@@ -55,12 +54,6 @@
     font-size: 1.25rem;
     margin: 0.5rem 0;
     font-family: "Roboto Slab", sans-serif;
-  }
-  h1.is-isFavourite {
-    background: var(--color-main);
-    color: white;
-    padding: 0 0.5rem;
-    border-radius: 5px;
   }
 
   h2 {

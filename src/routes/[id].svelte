@@ -12,7 +12,6 @@
         return res.json();
       })
       .then(data => {
-        console.log(data);
         return { selectedMeetup: { ...data, id: meetupId } };
       })
       .catch(err => {
