@@ -1,5 +1,5 @@
 <script>
-  import meetups from "./meetups-store.js";
+  import meetups from "../../meetups-store.js";
   import { createEventDispatcher } from "svelte";
   import TextInput from "../UI/TextInput.svelte";
   import Button from "../UI/Button.svelte";
@@ -8,7 +8,7 @@
     isEmpty,
     isValidEmail,
     hasLengthOfThree
-  } from "../helpers/validation.js";
+  } from "../../helpers/validation.js";
 
   export let id = null;
 
@@ -73,7 +73,7 @@
           }
           meetups.updateMeetup(id, meetupData);
         })
-        .catch(err => console.log(err));
+        .catch(err => this.error(404, err));
     } else {
       fetch("https://svelte-course-6b417.firebaseio.com/meetups.json", {
         method: "POST",
@@ -113,7 +113,7 @@
         }
         meetups.deleteMeetup(id);
       })
-      .catch(err => console.log(err));
+      .catch(err => this.error(404, err));
   }
 </script>
 

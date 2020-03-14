@@ -1,26 +1,35 @@
+<script context="module">
+  export function preload(page) {
+    const meetupId = page.params.id;
+
+    return this.fetch(
+      `https://svelte-course-6b417.firebaseio.com/meetups/${meetupId}.json`
+    )
+      .then(res => {
+        if (!res.ok) {
+          throw new Error("Fetching meetups failed. Please try again later");
+        }
+        return res.json();
+      })
+      .then(data => {
+        console.log(data);
+        return { selectedMeetup: { ...data, id: meetupId } };
+      })
+      .catch(err => {
+        error = err;
+        this.error(404, "Could not fetch meetup!");
+      });
+  }
+</script>
+
 <script>
-  import { onDestroy, createEventDispatcher } from "svelte";
-  import meetups from "./meetups-store.js";
-  import Button from "../UI/Button.svelte";
+  import meetups from "../meetups-store.js";
+  import Button from "../components/UI/Button.svelte";
 
-  export let id;
-
-  const dispatch = createEventDispatcher();
-  let selectedMeetup;
-
-  const unsubscribe = meetups.subscribe(items => {
-    selectedMeetup = items.find(i => i.id === id);
-  });
-
-  onDestroy(() => {
-    unsubscribe();
-  });
+  export let selectedMeetup;
 </script>
 
 <style>
-  section {
-    margin-top: 4rem;
-  }
   .image {
     width: 100%;
     height: 25rem;
@@ -60,9 +69,7 @@
       <h2>{selectedMeetup.subtitle} - {selectedMeetup.address}</h2>
       <p>{selectedMeetup.description}</p>
       <Button href="mailto:{selectedMeetup.email}">Contact</Button>
-      <Button type="button" mode="outline" on:click={() => dispatch('close')}>
-        Close
-      </Button>
+      <Button href="/" mode="outline">Close</Button>
     </div>
   {:else}
     <p>No Meetup with selected id :(</p>

@@ -83,7 +83,7 @@
 </style>
 
 {#if href}
-  <a {href}>
+  <a {href} class="{mode} {color}">
     <slot />
   </a>
 {:else}
