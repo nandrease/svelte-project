@@ -23,15 +23,13 @@
   if (id) {
     const unsubscribe = meetups.subscribe(items => {
       const selectedMeetup = items.find(i => i.id === id);
-      [
-        title,
-        subtitle,
-        address,
-        email,
-        imageUrl,
-        description,
-        email
-      ] = Object.values(selectedMeetup);
+      title = selectedMeetup.title;
+      subtitle = selectedMeetup.subtitle;
+      address = selectedMeetup.address;
+      email = selectedMeetup.email;
+      imageUrl = selectedMeetup.imageUrl;
+      description = selectedMeetup.description;
+      email = selectedMeetup.email;
     });
 
     unsubscribe();
@@ -64,9 +62,38 @@
     };
 
     if (id) {
-      meetups.updateMeetup(id, meetupData);
+      fetch(`https://svelte-course-6b417.firebaseio.com/meetups/${id}.json`, {
+        method: "PATCH",
+        body: JSON.stringify(meetupData),
+        headers: { "Content-Type": "application/json" }
+      })
+        .then(res => {
+          if (!res.ok) {
+            throw new Error("An error occurred, please try again!");
+          }
+          meetups.updateMeetup(id, meetupData);
+        })
+        .catch(err => console.log(err));
     } else {
-      meetups.addMeetup(meetupData);
+      fetch("https://svelte-course-6b417.firebaseio.com/meetups.json", {
+        method: "POST",
+        body: JSON.stringify({ ...meetupData, isFavourite: false }),
+        headers: { "Content-Type": "application/json" }
+      })
+        .then(res => {
+          if (!res.ok) {
+            throw new Error("Failed to send a POST request");
+          }
+          return res.json();
+        })
+        .then(data => {
+          meetups.addMeetup({
+            ...meetupData,
+            isFavourite: false,
+            id: data.name
+          });
+        })
+        .catch(err => console.warn(err));
     }
     dispatch("save");
   }
@@ -77,7 +104,16 @@
 
   function deleteMeetup() {
     dispatch("close");
-    meetups.deleteMeetup(id);
+    fetch(`https://svelte-course-6b417.firebaseio.com/meetups/${id}.json`, {
+      method: "DELETE"
+    })
+      .then(res => {
+        if (!res.ok) {
+          throw new Error("An error occurred, please try again!");
+        }
+        meetups.deleteMeetup(id);
+      })
+      .catch(err => console.log(err));
   }
 </script>
 
@@ -106,7 +142,7 @@
       value={subtitle}
       on:input={event => (subtitle = event.target.value)} />
     <TextInput
-      id="imageURL"
+      id="imageUrl"
       type="text"
       label="Image URL"
       valid={imageUrlValid}

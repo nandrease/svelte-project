@@ -15,7 +15,18 @@
   export let isFavourite;
 
   function toggleFavourite() {
-    meetups.toggleFavourite(id);
+    fetch(`https://svelte-course-6b417.firebaseio.com/meetups/${id}.json`, {
+      method: "PATCH",
+      body: JSON.stringify({ isFavourite: !isFavourite }),
+      headers: { "Content-Type": "application/json" }
+    })
+      .then(res => {
+        if (!res.ok) {
+          throw new Error("An error occurred, please try again!");
+        }
+        meetups.toggleFavourite(id);
+      })
+      .catch(err => console.log(err));
   }
 </script>
 
